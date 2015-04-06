@@ -1,0 +1,34 @@
+importFrom(
+    XML, names.XMLNode, toString.XMLNode, xmlAttrs, xmlChildren,
+    xmlElementsByTagName, xmlGetAttr, xmlName, xmlNamespace,
+    xmlNode, xmlRoot, xmlSApply, xmlTreeParse, xmlTree
+)
+
+importFrom(
+    RCurl, getCurlHandle, getURLContent, postForm, curlPerform, CFILE, close
+)
+
+importFrom(
+    tools, md5sum
+)
+
+export(
+    "flowRep.ls", "flowRep.get", "getFlowRepositoryURL", 
+    "setFlowRepositoryURL", "setFlowRepositoryCredentials",
+    "forgetFlowRepositoryCredentials",
+    "fcs.files<-", "attachments<-"
+)
+
+export(
+    "flowRepData", "fcsProxy", "attachmentProxy", "flowRepOrganization"
+)
+
+exportClasses(
+    "flowRepData", "fcsProxy", "attachmentProxy", "flowRepOrganization"
+)
+
+exportMethods(
+    "summary", "is.downloaded", "download", "id", "fcs.files", "attachments",
+    "fcs.files<-", "attachments<-", "localpath", "organizations"
+)
+
