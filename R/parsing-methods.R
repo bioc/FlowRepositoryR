@@ -141,12 +141,26 @@ setMethod("identifyNode", "experiment",
 )
 
 setMethod(
-    "identifyNode",
-    "public.datasets",
+    "identifyNode", "public.datasets",
     function(object, myEnv, ...) 
     {
-        myEnv[['datasetIDs']] <- 
-            unlist(strsplit(getElValAsChar(object), split=","))
+        myEnv[['datasetIDs']] <- tryCatch(
+            { unlist(strsplit(getElValAsChar(object), split=",")); },
+            interrupt = function(ex) { NULL; },
+            error = function(ex) { NULL; }
+        )
+    }
+)
+
+setMethod(
+    "identifyNode", "result.datasets",
+    function(object, myEnv, ...)
+    {
+        myEnv[['datasetIDs']] <- tryCatch(
+            { unlist(strsplit(getElValAsChar(object), split=",")); },
+            interrupt = function(ex) { NULL; },
+            error = function(ex) { NULL; }
+        )
     }
 )
 

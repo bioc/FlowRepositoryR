@@ -1,7 +1,7 @@
 Package: FlowRepositoryR
 Type: Package
 Title: FlowRepository R Interface
-Version: 1.1.0
+Version: 1.1.1
 Author: Josef Spidlen [aut, cre]
 Authors@R: c(person("Josef", "Spidlen", role = c("aut", "cre"), email =
         "jspidlen@bccrc.ca"))
@@ -9,9 +9,9 @@ Maintainer: Josef Spidlen <jspidlen@bccrc.ca>
 Description: This package provides an interface to search and download
         data and annotations from FlowRepository (flowrepository.org).
         It uses the FlowRepository programming interface to communicate
-        with a FlowRepository server. 
+        with a FlowRepository server.
 Depends: R (>= 3.2)
-Imports: XML, RCurl, tools
+Imports: XML, RCurl, tools, utils
 Suggests: RUnit, BiocGenerics, flowCore, methods
 Collate: AllClasses.R settings.R helper-functions.R parsing-methods.R
         summary-methods.R accessor-methods.R methods.R

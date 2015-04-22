@@ -66,3 +66,32 @@ flowRep.get <- function(id, use.credentials=TRUE) {
     unlist(myEnv[[id]])
 }
 
+flowRep.search <- function(query.string) {
+    if((!is(query.string, "character")) || nchar(query.string) == 0)
+        stop("query.string shall be a non-empty string", call.=FALSE)
+    query.string <- URLencode(query.string, reserved=TRUE, repeated=TRUE)
+
+    ## This is just getting ready for when the API supports this, at this point
+    ## public datasets only are being searched.
+    include.private <- FALSE
+    if (!haveFlowRepositoryCredentials()) include.private <- FALSE
+    destfile <- tempfile(pattern="FlowRepository.DatasetList", 
+        tmpdir=tempdir(), fileext=".xml")
+    h <- getCurlHandle(cookiefile="")
+
+    if (include.private) flowRep.login(h)
+    f <- CFILE(destfile, mode="wb")
+    response <- curlPerform(url=paste0(getFlowRepositoryURL(), 
+        'apisearch?client=', getFlowRepositoryClientID(), '&query_term=',
+        query.string), 
+        writedata=f@ref, curl=h, .opts=list(ssl.verifypeer=FALSE))
+    close(f)
+    if (include.private) flowRep.logout(h)
+
+    myEnv <- new.env()
+    myEnv[['datasetIDs']] <- list()
+    parseFlowRepositoryXML(xmlRoot(smartTreeParse(destfile)), myEnv)
+    try(file.remove(destfile), silent=TRUE)
+    unlist(myEnv[['datasetIDs']])
+}
+

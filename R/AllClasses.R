@@ -225,4 +225,6 @@ setClass("error", representation=representation(),
     validity=function(object) {})
 setClass("public.datasets", representation=representation(), 
     validity=function(object) {})
+setClass("result.datasets", representation=representation(), 
+    validity=function(object) {})
 
