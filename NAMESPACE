@@ -16,6 +16,10 @@ importFrom(
     utils, URLencode
 )
 
+importFrom(
+    fromJSON, extractImpcInfo
+)
+
 export(
     "flowRep.ls", "flowRep.get", "flowRep.search",
     "getFlowRepositoryURL", 

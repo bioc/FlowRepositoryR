@@ -45,7 +45,8 @@ setClass("flowRepData",
         publications="list",
         organizations="list",
         fcs.files="list", 
-        attachments="list"
+        attachments="list",
+        impc.experiments="list"
     ),
     prototype=list(
         id="defaultDatasetId",
@@ -66,7 +67,8 @@ setClass("flowRepData",
         publications=list(),
         organizations=list(),
         fcs.files=list(),
-        attachments=list()
+        attachments=list(),
+        impc.experiments=list()
     ),
     validity=function(object)
     {
@@ -85,19 +87,19 @@ flowRepData <- function(
     purpose=NULL, conclusion=NULL, comments=NULL,
     funding=NULL, qc.measures=NULL, miflowcyt.score=NULL,
     keywords=list(), publications=list(), organizations=list(),
-    fcs.files=list(), attachments=list())
+    fcs.files=list(), attachments=list(), impc.experiments=list())
     {
         new("flowRepData", 
         id=id, 
         public.url=public.url, 
-        name=name, 
-        public=public, 
-        primary.researcher=primary.researcher, 
-        primary.investigator=primary.investigator, 
-        uploader=uploader, 
+        name=name,
+        public=public,
+        primary.researcher=primary.researcher,
+        primary.investigator=primary.investigator,
+        uploader=uploader,
         experiment.dates=experiment.dates,
-        purpose=purpose, 
-        conclusion=conclusion, 
+        purpose=purpose,
+        conclusion=conclusion,
         comments=comments,
         funding=funding,
         qc.measures=qc.measures,
@@ -106,7 +108,8 @@ flowRepData <- function(
         publications=publications,
         organizations=organizations,
         fcs.files=fcs.files,
-        attachments=attachments)
+        attachments=attachments,
+        impc.experiments=impc.experiments)
 }
 
 ## Definition of the fileProxy class

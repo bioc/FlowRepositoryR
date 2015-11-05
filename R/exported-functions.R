@@ -43,7 +43,7 @@ flowRep.ls <- function(include.private=FALSE) {
 }
 
 
-flowRep.get <- function(id, use.credentials=TRUE) {
+flowRep.get <- function(id, use.credentials=TRUE, impc.details=FALSE) {
     if (!is.character(id)) 
         stop('Please specify a dataset identifier as a character string.')
     if (!haveFlowRepositoryCredentials()) use.credentials <- FALSE
@@ -51,10 +51,13 @@ flowRep.get <- function(id, use.credentials=TRUE) {
         fileext=".xml")
     h <- getCurlHandle(cookiefile="")
 
+    impcreq <- ""
+    if (impc.details) impcreq <- "&impc=details"
     if (use.credentials) flowRep.login(h)
     f <- CFILE(destfile, mode="wb")
     response <- curlPerform(url=paste0(getFlowRepositoryURL(), 
-        'list/', as.character(id), '?client=', getFlowRepositoryClientID()), 
+        'list/', as.character(id), '?client=', getFlowRepositoryClientID(), 
+        impcreq), 
         writedata=f@ref, curl=h, .opts=list(ssl.verifypeer=FALSE))
     close(f)
     if (use.credentials) flowRep.logout(h)

@@ -80,6 +80,7 @@ setMethod("identifyNode", "experiment",
         organizations <- list()
         fcs.files <- list()
         attachments <- list()
+        impc.experiments <- list()
     
         for (node in xmlChildren(object))
         {
@@ -121,8 +122,10 @@ setMethod("identifyNode", "experiment",
                 organizations <- extractOrganizations(node)
             else if (node$name == "fcs-files") 
                 fcs.files <- extractFCSFilesInfo(node)
-            else if (node$name == "attachments") 
+            else if (node$name == "attachments")
                 attachments <- extractAttachmentsInfo(node)
+            else if (node$name == "impc_experiments")
+                impc.experiments <- extractImpcInfo(node)
         }
     
         if (!is.null(id)) {
@@ -135,7 +138,8 @@ setMethod("identifyNode", "experiment",
                 qc.measures=qc.measures,
                 miflowcyt.score=miflowcyt.score, keywords=keywords, 
                 publications=publications, organizations=organizations, 
-                fcs.files=fcs.files, attachments=attachments)
+                fcs.files=fcs.files, attachments=attachments,
+                impc.experiments <- impc.experiments)
         }
     }
 )
@@ -333,6 +337,115 @@ extractAttachmentsInfo <- function(object)
                     size=as.numeric(file.size), md5sum=file.md5sum, 
                     description=file.description, localpath=NULL))
             }
+        }
+    }
+    ret
+}
+
+extractImpcInfo <- function(object)
+{
+    ret <- list()
+    for (node in xmlChildren(object))
+    {
+        if (node$name == "impc_experiment")  {
+            impc_experiment_code <- xmlGetAttr(node, "impc_experiment_code")
+            details <- NULL
+            impc_specimen_code <- NULL
+            impc_specimen_details <- NULL
+            impc_metadata_sets <- list()
+            impc_parameter_sets <- list()
+            
+            for (childnode in xmlChildren(node))
+            {
+                if (childnode$name == "details")
+                    details <- tryCatch(fromJSON(xmlGetAttr(childnode, "json")), 
+                        warning=function(w){}, error=function(e){}, finally={})
+                else if (childnode$name == "impc_specimen") 
+                {
+                    impc_specimen_code <- xmlGetAttr(childnode, 
+                        "impc_specimen_code")
+                    for (grandchildnode in xmlChildren(childnode)) 
+                    {
+                        if (grandchildnode$name == "details")
+                            impc_specimen_details <- tryCatch(
+                                fromJSON(xmlGetAttr(grandchildnode, "json")), 
+                                warning=function(w){}, error=function(e){}, 
+                                finally={}
+                            )
+                    }
+                }
+                else if (childnode$name == "impc_metadata_sets") 
+                {
+                    for (grandchildnode in xmlChildren(childnode))
+                    {
+                        if (grandchildnode$name == "impc_metadata")
+                        {
+                            impc_metadata_set <- NULL
+                            for (g2childnode in xmlChildren(grandchildnode)) 
+                            {
+                                if (g2childnode$name == "details")
+                                    impc_metadata_set <- tryCatch(
+                                        fromJSON(
+                                            xmlGetAttr(g2childnode, "json")), 
+                                        warning=function(w){}, 
+                                        error=function(e){}, 
+                                        finally={}
+                                    )
+                            }
+                            impc_metadata_set <- tryCatch(
+                                impc_metadata_set$impc_metadata, 
+                                warning=function(w){}, error=function(e){}, 
+                                finally={})
+                            impc_metadata_sets <- c(ret, list(impc_metadata_set))
+                        }
+                    }
+                }
+                else if (childnode$name == "impc_parameter_sets") 
+                {
+                    for (grandchildnode in xmlChildren(childnode))
+                    {
+                        if (grandchildnode$name == "impc_parameters")
+                        {
+                            gated_by <- xmlGetAttr(grandchildnode, "gated_by")
+                            impc_parameter_set <- NULL
+                            for (g2childnode in xmlChildren(grandchildnode)) 
+                            {
+                                if (g2childnode$name == "details")
+                                    impc_parameter_set <- tryCatch(
+                                        fromJSON(
+                                            xmlGetAttr(g2childnode, "json")), 
+                                        warning=function(w){}, 
+                                        error=function(e){}, 
+                                        finally={}
+                                    )
+                            }
+                            impc_parameter_set <- tryCatch(
+                                impc_parameter_set$impc_parameter, 
+                                warning=function(w){}, error=function(e){}, 
+                                finally={})
+                            impc_parameter_set$gated_by <- gated_by
+                            impc_parameter_sets <- c(ret, list(impc_parameter_set))
+                        }
+                    }
+                    
+                }
+            }
+            
+            details <- tryCatch(details$impc_experiment, 
+                     warning=function(w){}, error=function(e){}, finally={})
+            impc_specimen_details <- tryCatch(
+                impc_specimen_details$impc_specimen, 
+                warning=function(w){}, error=function(e){}, finally={})
+            
+            impc_experiment <- list(
+                "impc_experiment_code" = impc_experiment_code,
+                "details" = details,
+                "impc_specimen_code" = impc_specimen_code,
+                "impc_specimen_details" = impc_specimen_details,
+                "impc_metadata_sets" = impc_metadata_sets,
+                "impc_parameter_sets" = impc_parameter_sets
+                )
+            ret <- c(ret, list(impc_experiment))
         }
     }
     ret
