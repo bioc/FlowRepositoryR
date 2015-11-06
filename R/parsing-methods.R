@@ -351,6 +351,7 @@ extractImpcInfo <- function(object)
             impc_experiment_code <- xmlGetAttr(node, "impc_experiment_code")
             details <- NULL
             impc_specimen_code <- NULL
+            impc_specimen_fcs_files <- list()
             impc_specimen_details <- NULL
             impc_metadata_sets <- list()
             impc_parameter_sets <- list()
@@ -367,11 +368,37 @@ extractImpcInfo <- function(object)
                     for (grandchildnode in xmlChildren(childnode)) 
                     {
                         if (grandchildnode$name == "details")
+                        {
                             impc_specimen_details <- tryCatch(
                                 fromJSON(xmlGetAttr(grandchildnode, "json")), 
                                 warning=function(w){}, error=function(e){}, 
                                 finally={}
                             )
+                        }
+                        else if (grandchildnode$name == "fcs_files")
+                        {
+                            for (g2childnode in xmlChildren(grandchildnode)) 
+                            {
+                                if (g2childnode$name == "fcs_file")
+                                {
+                                    f <- xmlGetAttr(g2childnode, "filename")
+                                    p <- xmlGetAttr(g2childnode, "panel")
+                                    incV <- xmlGetAttr(
+                                        g2childnode, "incrementValue")
+                                    s <- xmlGetAttr(g2childnode, "size")
+                                    m <- xmlGetAttr(g2childnode, "md5sum")
+                                    
+                                    impc_specimen_fcs_files <- c(
+                                        impc_specimen_fcs_files, 
+                                        list(list(
+                                            filename = f,
+                                            panel = p,
+                                            incrementValue = incV,
+                                            size = s,
+                                            md5sum = m)))
+                                }
+                            }
+                        }
                     }
                 }
                 else if (childnode$name == "impc_metadata_sets") 
@@ -441,6 +468,7 @@ extractImpcInfo <- function(object)
                 "impc_experiment_code" = impc_experiment_code,
                 "details" = details,
                 "impc_specimen_code" = impc_specimen_code,
+                "impc_specimen_fcs_files" = impc_specimen_fcs_files,
                 "impc_specimen_details" = impc_specimen_details,
                 "impc_metadata_sets" = impc_metadata_sets,
                 "impc_parameter_sets" = impc_parameter_sets
