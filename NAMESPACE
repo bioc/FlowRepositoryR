@@ -25,7 +25,8 @@ export(
     "getFlowRepositoryURL", 
     "setFlowRepositoryURL", "setFlowRepositoryCredentials",
     "forgetFlowRepositoryCredentials",
-    "fcs.files<-", "attachments<-"
+    "fcs.files<-", "attachments<-",
+    "impcCodeDescription"
 )
 
 export(
