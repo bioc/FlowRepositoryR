@@ -164,7 +164,11 @@ setFlowRepositoryURL <- function(url) {
 }
 
 impcCodeDescription <- function(code) {
-    .FlowRepository.env$.dict[[tolower(code)]]
+    if (length(code) == 1) {
+        .FlowRepository.env$.dict[[tolower(code)]]    
+    } else {
+        unlist(lapply(as.list(code), impcCodeDescription))
+    }
 }
 
 
