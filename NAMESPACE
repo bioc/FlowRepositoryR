@@ -39,6 +39,7 @@ exportClasses(
 
 exportMethods(
     "summary", "is.downloaded", "download", "id", "fcs.files", "attachments",
-    "fcs.files<-", "attachments<-", "localpath", "organizations"
+    "fcs.files<-", "attachments<-", "localpath", "organizations",
+    "impcResultsCopy"
 )
 

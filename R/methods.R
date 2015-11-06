@@ -171,3 +171,44 @@ setMethod(
         TRUE
     }
 )
+
+if (!isGeneric("impcResultsCopy")) 
+{
+    if (is.function("impcResultsCopy")) {
+        fun <- impcResultsCopy
+    } else {
+        fun <- function(object) standardGeneric("impcResultsCopy")
+    }
+    setGeneric(
+        "impcResultsCopy",
+        def=function(object, ...) fun,
+        useAsDefault=function(object, ...)
+        {
+            stop(paste("The impcResultsCopy method is not supported on", 
+                class(object)))
+        }
+    )
+}
+
+setMethod(
+    "impcResultsCopy",
+    signature=signature(object="flowRepData"),
+    definition=function(object, experimentIndex = 1, resultIndex = 1, ...)
+    {
+        ret <- tryCatch(
+            {
+                ret <- object@impc.experiments[[experimentIndex]]$
+                    impc_parameter_sets[[resultIndex]]
+                ret$updated_at <- NULL
+                ret$created_at <- NULL
+                ret$gated_by <- NULL
+                ret$gated_by_id <- NULL
+                ret$impc_experiment_id <- NULL
+                ret$id <- NULL
+                ret
+            },
+            warning=function(w){}, error=function(e){}, finally={})
+        ret
+    }
+)
+

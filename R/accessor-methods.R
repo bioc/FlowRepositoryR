@@ -69,6 +69,26 @@ setReplaceMethod("attachments",
     }
 )
 
+if (!isGeneric("impc.experiments")) {
+    if (is.function("impc.experiments")) fun <- impc.experiments
+    else fun <- function(object) standardGeneric("impc.experiments")
+    setGeneric("impc.experiments", fun)
+}
+setMethod("impc.experiments", "flowRepData", function(object) object@impc.experiments)
+if (!isGeneric("impc.experiments<-")) {
+    setGeneric("impc.experiments<-", 
+               function(x, value) standardGeneric("impc.experiments<-"))
+}
+setReplaceMethod("impc.experiments",
+                 signature=signature(x="flowRepData", value="ANY"),
+                 definition=function(x, value) {
+                     if(!is(value, "list"))
+                         stop("impc.experiments shall be a list", call.=FALSE)
+                     x@impc.experiments <- value
+                     return(x)
+                 }
+)
+
 if (!isGeneric("localpath")) {
     if (is.function("localpath")) fun <- localpath
     else fun <- function(object) standardGeneric("localpath")
