@@ -98,3 +98,25 @@ flowRep.search <- function(query.string) {
     unlist(myEnv[['datasetIDs']])
 }
 
+flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
+    if (!is.list(results)) stop("results shall be a list", call.=FALSE)
+    if ((!is.character(gatedByIlar)) || 
+        (nchar(gatedByIlar) == 0) || (nchar(gatedByIlar) > 5))
+        stop(paste("gatedByIlar shall be a code from the International",
+                   "Laboratory Code Registry list"), call.=FALSE)
+    if (!is.character(impcExpId))
+        stop("impcExpId shall be an IMPC experiment identifier", call.=FALSE)
+    if (!haveFlowRepositoryCredentials()) 
+        stop("credentials need to be set before you can submit IMPC results", 
+             call.=FALSE)
+    
+    credentials <- getFlowRepositoryCredentials()
+    resultsJson <- toJSON(results)
+    response <- postForm(
+        paste0(getFlowRepositoryURL(), "impc/submit/results"), 
+        email=credentials[1], pass=credentials[2],
+        gated_by=gatedByIlar, impc_exp_id=impcExpId, results=resultsJson,
+        .opts=list(ssl.verifypeer=FALSE))
+    response
+}
+
