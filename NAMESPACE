@@ -17,7 +17,7 @@ importFrom(
 )
 
 importFrom(
-    jsonlite, fromJSON
+    jsonlite, fromJSON, toJSON
 )
 
 export(
