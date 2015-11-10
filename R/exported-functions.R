@@ -112,11 +112,14 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
     
     credentials <- getFlowRepositoryCredentials()
     resultsJson <- toJSON(results)
+    headfunc  <- basicTextGatherer()
+    writefunc <- basicTextGatherer()
     response <- postForm(
         paste0(getFlowRepositoryURL(), "impc/submit/results"), 
         email=credentials[1], pass=credentials[2],
         gated_by=gatedByIlar, impc_exp_id=impcExpId, results=resultsJson,
-        .opts=list(ssl.verifypeer=FALSE))
-    response
+        .opts=list(ssl.verifypeer=FALSE, 
+                   headerfunction=headfunc$update, writefunc=writefunc$update))
+    writefunc$value()
 }
 
