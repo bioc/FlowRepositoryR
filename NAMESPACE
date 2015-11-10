@@ -5,7 +5,7 @@ importFrom(
 )
 
 importFrom(
-    RCurl, getCurlHandle, getURLContent, postForm, curlPerform, CFILE, close
+    RCurl, getCurlHandle, getURLContent, postForm, curlPerform, CFILE, close, basicTextGatherer
 )
 
 importFrom(
