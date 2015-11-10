@@ -115,7 +115,7 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
     headfunc  <- basicTextGatherer()
     writefunc <- basicTextGatherer()
     response <- postForm(
-        paste0(getFlowRepositoryURL(), "impc/submit/results"), 
+        paste0(getFlowRepositoryURL(), "impsc/submit/results"), 
         email=credentials[1], pass=credentials[2],
         gated_by=gatedByIlar, impc_exp_id=impcExpId, results=resultsJson,
         .opts=list(ssl.verifypeer=FALSE, 
@@ -123,13 +123,30 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
     
     response <- writefunc$value()
     header <- headfunc$value()
+    # Extract few of the common respone statuses from the header.
+    # If not among those then return the whole header.
     if (length(grep("200 OK", header, ignore.case = TRUE)) >= 1) {
         header <- "200 OK"
     } else {
         if (length(grep("401 Unauthorized", header, ignore.case = TRUE)) >= 1) {
             header <- "401 Unauthorized"
+        } else {
+            if (length(grep("403 Forbidden", header, 
+                ignore.case = TRUE)) >= 1) {
+                header <- "403 Forbidden"
+            } else {
+                if (length(grep("500 Internal Server Error", header, 
+                                ignore.case = TRUE)) >= 1) {
+                    header <- "500 Internal Server Error"
+                } else {
+                    if (length(grep("404 Not Found", header, 
+                                    ignore.case = TRUE)) >= 1) {
+                        header <- "404 Not Found"
+                    }
+                }
+            } 
         }
     }
-    c(response, header)
+    list(response=response, status=header)
 }
 
