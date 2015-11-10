@@ -403,11 +403,11 @@ extractImpcInfo <- function(object)
                 }
                 else if (childnode$name == "impc_metadata_sets") 
                 {
+                    impc_metadata_set <- NULL
                     for (grandchildnode in xmlChildren(childnode))
                     {
                         if (grandchildnode$name == "impc_metadata")
                         {
-                            impc_metadata_set <- NULL
                             for (g2childnode in xmlChildren(grandchildnode)) 
                             {
                                 if (g2childnode$name == "details")
@@ -429,12 +429,12 @@ extractImpcInfo <- function(object)
                 }
                 else if (childnode$name == "impc_parameter_sets") 
                 {
+                    impc_parameter_set <- NULL
                     for (grandchildnode in xmlChildren(childnode))
                     {
                         if (grandchildnode$name == "impc_parameters")
                         {
                             gated_by <- xmlGetAttr(grandchildnode, "gated_by")
-                            impc_parameter_set <- NULL
                             for (g2childnode in xmlChildren(grandchildnode)) 
                             {
                                 if (g2childnode$name == "details")
