@@ -142,6 +142,11 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
                     if (length(grep("404 Not Found", header, 
                                     ignore.case = TRUE)) >= 1) {
                         header <- "404 Not Found"
+                    } else {
+                        if (length(grep("400 Bad Request", header, 
+                                        ignore.case = TRUE)) >= 1) {
+                            header <- "400 Bad Request"
+                        }   
                     }
                 }
             } 
