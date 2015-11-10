@@ -120,6 +120,16 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
         gated_by=gatedByIlar, impc_exp_id=impcExpId, results=resultsJson,
         .opts=list(ssl.verifypeer=FALSE, 
                    headerfunction=headfunc$update, writefunc=writefunc$update))
-    writefunc$value()
+    
+    response <- writefunc$value()
+    header <- headfunc$value()
+    if (length(grep("200 OK", header, ignore.case = TRUE)) >= 1) {
+        header <- "200 OK"
+    } else {
+        if (length(grep("401 Unauthorized", header, ignore.case = TRUE)) >= 1) {
+            header <- "401 Unauthorized"
+        }
+    }
+    c(response, header)
 }
 
