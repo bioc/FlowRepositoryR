@@ -6,6 +6,7 @@
 \alias{is.downloaded,flowRepData-method}
 \alias{download,flowRepData-method}
 \alias{id,flowRepData-method}
+\alias{impcResultsCopy,flowRepData-method}
 \alias{fcs.files}
 \alias{fcs.files,flowRepData-method}
 \alias{fcs.files,flowRepData,fcs.files-method}
