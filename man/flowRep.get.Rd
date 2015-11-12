@@ -12,7 +12,7 @@
 }
 
 \usage{
-    flowRep.get(id, use.credentials=TRUE)
+    flowRep.get(id, use.credentials=TRUE,impc.details=FALSE)
 }
 
 \arguments{
@@ -33,6 +33,12 @@
         setting \code{use.credentials=FALSE} will skip 
         authentication (login/logout) and therefore perform a
         little bit faster.}
+    \item{impc.details}{Whether to include details about IMPC experiments
+        related to that FlowRepository experiment. If set to TRUE and
+        there are related IMPC experiment then details will be placed in the
+        \code{impc.experiments} slot of the returned 
+        \code{\linkS4class{flowRepData}} object. Otherwise, the 
+        \code{impc.experiments} slot will be an empty list.}
 }
 
 \details{

@@ -55,6 +55,7 @@
     \code{  organizations        = ....,  Object of class list}\cr
     \code{  fcs.files            = ....,  Object of class list}\cr
     \code{  attachments          = ....,  Object of class list}\cr
+    \code{  impc.experiments     = ....,  Object of class list}\cr
     \code{)}\cr
 
     or the constructor \code{flowRepData}, with mandatory argument
@@ -63,7 +64,8 @@
     \code{uploader}, \code{experiment.dates}, \code{purpose}, 
     \code{conclusion}, \code{comments}, \code{funding}, \code{qc.measures}, 
     \code{miflowcyt.score}, \code{keywords}, \code{publications}, 
-    \code{organizations}, \code{fcs.files}, and \code{attachments}.
+    \code{organizations}, \code{fcs.files}, \code{attachments} and 
+    \code{impc.experiments}.
 
     \code{flowRepData(id, public.url=NULL, name=NULL, public=NULL,}\cr
     \code{  primary.researcher=NULL, primary.investigator=NULL,}\cr
@@ -71,7 +73,7 @@
     \code{  purpose=NULL, conclusion=NULL, comments=NULL,}\cr
     \code{  funding=NULL, qc.measures=NULL, miflowcyt.score=NULL,}\cr
     \code{  keywords=list(), publications=list(), organizations=list(),}\cr
-    \code{  fcs.files=list(), attachments=list())}\cr
+    \code{  fcs.files=list(), attachments=list(), impc.experiments=list())}\cr
 }
 
 \section{Slots}{
@@ -180,6 +182,11 @@
             of class \code{\linkS4class{attachmentProxy}}
             enumerating attachments associated with this dataset.
         }
+        
+        \item{\code{impc.experiments}:}{Object of class \code{list}
+            enumerating IMPC experiments associated with this FlowRepository
+            experiment.
+        }
 
     }
 }
@@ -234,6 +241,20 @@
         \item{organizations}{Return an object of class \code{list} of objects
             of class \code{\linkS4class{flowRepOrganization}}
             enumerating organizations associated with this dataset.
+        }
+        
+        \item{impcResultsCopy}{Return an object of class \code{list} with a
+            copy of IMPC analysis results.
+            See \code{\link{impcResultsCopy}} for details.
+            \emph{Usage:}
+            \code{
+            impcResultsCopy(flowRepData, experimentIndex=1, resultIndex=1)
+            }
+            The result is a copy of what can typically be found in
+            \code{flowRepData@impc.experiments[[experimentIndex]]$
+                impc_parameter_sets[[resultIndex]]}
+            but without the \code{updated_at}, \code{created_at}, \code{id},
+            \code{gated_by}, \code{gated_by_id}, and \code{impc_experiment_id}.
         }
 
     }
