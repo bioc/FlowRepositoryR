@@ -131,7 +131,7 @@
 \examples{
     ## Get dataset from FlowRepository
     mySmallDataset <- flowRep.get("FR-FCM-ZZ3X", impc.details = TRUE)
-    impcResultsCopy(mySmallDataset)
+    impcResultsCopy(mySmallDataset, experimentIndex = 1, resultIndex = 1)
     ## The result will be NULL since the "FR-FCM-ZZ3X" does not include
     ## any IMPC details. Right now, IMPC details are only in private instances
     ## of FlowRepository. This example will be updated to a better once once

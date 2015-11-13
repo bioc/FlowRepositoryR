@@ -193,7 +193,7 @@ if (!isGeneric("impcResultsCopy"))
 setMethod(
     "impcResultsCopy",
     signature=signature(object="flowRepData"),
-    definition=function(object, experimentIndex = 1, resultIndex = 1, ...)
+    definition=function(object, experimentIndex, resultIndex, ...)
     {
         ret <- tryCatch(
             {

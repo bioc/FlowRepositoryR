@@ -249,7 +249,7 @@
             See \code{\link{impcResultsCopy}} for details.
             \emph{Usage:}
             \code{
-            impcResultsCopy(flowRepData, experimentIndex=1, resultIndex=1)
+            impcResultsCopy(flowRepData, experimentIndex, resultIndex)
             }
             The result is a copy of what can typically be found in
             \code{flowRepData@impc.experiments[[experimentIndex]]$
