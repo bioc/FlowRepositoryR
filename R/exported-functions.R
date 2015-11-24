@@ -24,7 +24,9 @@
 flowRep.ls <- function(
     include.private=FALSE,
     impc.only=FALSE,
-    impc.centre=NULL) 
+    impc.centre=NULL,
+    impc.date.from=NULL,
+    impc.date.to=NULL) 
     {
     if (!haveFlowRepositoryCredentials()) include.private <- FALSE
     destfile <- tempfile(pattern="FlowRepository.DatasetList", 
@@ -46,7 +48,7 @@ flowRep.ls <- function(
         {
             if (is.null(ilarCodeDescription(impc.centre))) 
             {
-                warning(paste0("This impc.centre was not recognized; use an ILAR code of a recognized center, one of ", paste0(listKnownIlarCodes(), collapse = ", ")), ".")
+                warning(paste0("This impc.centre was not recognized; use an ILAR code of a known IMPC center, one of ", paste0(listKnownIlarCodes(), collapse = ", ")), ".")
                 return(NULL)
             } 
             else 
@@ -61,6 +63,39 @@ flowRep.ls <- function(
             return(NULL)
         }
     }
+    
+    if (!is.null(impc.date.from)) 
+    {
+        if ((class(impc.date.from) != "Date") || (length(impc.date.from) != 1)) 
+        {
+            warning(paste('impc.date.from shall be a single Date value, ',
+                'e.g., as.Date("2015-10-01", "%Y-%m-%d")'))
+            return(NULL)
+        }
+        else
+        {
+            myUrl <- paste0(myUrl, "&datafrom=", 
+                strftime(impc.date.from, "%Y%m%d"))
+            impc.only <- TRUE
+        }
+    }
+    
+    if (!is.null(impc.date.to)) 
+    {
+        if ((class(impc.date.to) != "Date") || (length(impc.date.to) != 1)) 
+        {
+            warning(paste('impc.date.to shall be a single Date value, ',
+                'e.g., as.Date("2015-10-01", "%Y-%m-%d")'))
+            return(NULL)
+        }
+        else
+        {
+            myUrl <- paste0(myUrl, "&datato=", 
+                strftime(impc.date.to, "%Y%m%d"))
+            impc.only <- TRUE
+        }
+    }
+    
     
     if (impc.only) 
     {
