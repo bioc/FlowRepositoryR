@@ -152,6 +152,19 @@
 .FlowRepository.env$.dict$impc_imm_114_001 <- "Enzyme buffer manufacturer"
 .FlowRepository.env$.dict$impc_imm_115_001 <- "Enzyme buffer catalog number"
 
+.FlowRepository.env$.ilars <- new.env()
+.FlowRepository.env$.ilars$Rbri <- "BC Cancer Agency"
+.FlowRepository.env$.ilars$BCM <- "Baylor College of Medicine"
+.FlowRepository.env$.ilars$Gmc <- "Helmholtz Zentrum Munchen"
+.FlowRepository.env$.ilars$H <- "MRC Harwell"
+.FlowRepository.env$.ilars$Ics <- "Institut Clinique de la Souris"
+.FlowRepository.env$.ilars$J <- "The Jackson Laboratory"
+.FlowRepository.env$.ilars$Tcp <- "The Toronto Centre for Phenogenomics"
+.FlowRepository.env$.ilars$Rbrc <- "Nanjing University"
+.FlowRepository.env$.ilars$Ning <- "RIKEN Tsukuba Institute, BioResource Center"
+.FlowRepository.env$.ilars$Ucd <- "University of California, Davis"
+.FlowRepository.env$.ilars$WTSI <- "Wellcome Trust Sanger Institute"
+
 ## Exported
 getFlowRepositoryURL <- function() {
     .FlowRepository.env$.FlowRepository.URL
@@ -163,6 +176,7 @@ setFlowRepositoryURL <- function(url) {
     .FlowRepository.env$.FlowRepository.URL <- url
 }
 
+## Exported
 impcCodeDescription <- function(code) {
     if (length(code) == 1) {
         .FlowRepository.env$.dict[[tolower(code)]]    
@@ -171,6 +185,18 @@ impcCodeDescription <- function(code) {
     }
 }
 
+## Exported
+ilarCodeDescription <- function(code) {
+    if (length(code) == 1) {
+        .FlowRepository.env$.ilars[[code]]
+    } else {
+        unlist(lapply(as.list(code), ilarCodeDescription))
+    }
+}
+
+listKnownIlarCodes <- function(code) {
+    ls(envir = .FlowRepository.env$.ilars)
+}
 
 ## NOT Exported
 getFlowRepositoryClientID <- function() {

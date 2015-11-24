@@ -80,26 +80,3 @@ flowRep.logout <- function(curlHandle)
         curl=curlHandle, .opts=list(ssl.verifypeer=FALSE))   
 }
 
-# Expecting a vector with named components, e.g.,
-# x <- c(1,2,3,4)
-# names(x) <- c("id1", "id2", "id3", "id4")
-# and will result JSON like this
-# [{"id":"id1","v":1},{"id":"id2","v":2},{"id":"id3","v":3},{"id":"id4","v":4}]
-# namedVectorToJson <- function(x)
-# {
-#     paste(
-#         '[',
-#         paste(apply(data.frame(values=x), 2, function(y) namedValuetoJson(y)), 
-#             collapse=","),
-#         ']', sep='')
-# }
-# 
-# namedValuetoJson <- function(x)
-# {
-#     paste(
-#         paste('{"id":"', names(x), '"', sep=''),
-#         paste('"v":', as.character(x), "}", sep=''),
-#         sep=',')
-# }
-# 
-# 

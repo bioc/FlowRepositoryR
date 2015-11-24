@@ -21,17 +21,56 @@
 ###############################################################################
 
 
-flowRep.ls <- function(include.private=FALSE) {
+flowRep.ls <- function(
+    include.private=FALSE,
+    impc.only=FALSE,
+    impc.centre=NULL) 
+    {
     if (!haveFlowRepositoryCredentials()) include.private <- FALSE
     destfile <- tempfile(pattern="FlowRepository.DatasetList", 
         tmpdir=tempdir(), fileext=".xml")
     h <- getCurlHandle(cookiefile="")
 
+    myUrl <- paste0(getFlowRepositoryURL(), 
+        'list?client=', getFlowRepositoryClientID())
+    
+    if(length(impc.only) > 1 || !is.logical(impc.only))
+    {
+        warning("impc.only shall be a single logical value, TRUE or FALSE")
+        return(NULL)
+    }
+    
+    if (!is.null(impc.centre))
+    {
+        if (is.character(impc.centre) && (length(impc.centre) == 1))
+        {
+            if (is.null(ilarCodeDescription(impc.centre))) 
+            {
+                warning(paste0("This impc.centre was not recognized; use an ILAR code of a recognized center, one of ", paste0(listKnownIlarCodes(), collapse = ", ")), ".")
+                return(NULL)
+            } 
+            else 
+            {
+                myUrl <- paste0(myUrl, "&impccentre=", impc.centre)
+                impc.only <- TRUE
+            }
+        }
+        else 
+        {
+            warning("impc.centre shall be a single string of characters")
+            return(NULL)
+        }
+    }
+    
+    if (impc.only) 
+    {
+        myUrl <- paste0(myUrl, "&impconly=1")
+    }
+    
     if (include.private) flowRep.login(h)
     f <- CFILE(destfile, mode="wb")
-    response <- curlPerform(url=paste0(getFlowRepositoryURL(), 
-        'list?client=', getFlowRepositoryClientID()), writedata=f@ref, 
-        curl=h, .opts=list(ssl.verifypeer=FALSE))
+    response <- curlPerform(url=myUrl, writedata=f@ref, curl=h, 
+        .opts=list(ssl.verifypeer=FALSE))
     close(f)
     if (include.private) flowRep.logout(h)
 
