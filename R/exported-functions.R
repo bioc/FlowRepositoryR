@@ -24,6 +24,7 @@
 flowRep.ls <- function(
     include.private=FALSE,
     impc.only=FALSE,
+    impc.unanalyzed.only=FALSE,
     impc.centre=NULL,
     impc.date.from=NULL,
     impc.date.to=NULL) 
@@ -40,6 +41,19 @@ flowRep.ls <- function(
     {
         warning("impc.only shall be a single logical value, TRUE or FALSE")
         return(NULL)
+    }
+    
+    if(length(impc.unanalyzed.only) > 1 || !is.logical(impc.unanalyzed.only))
+    {
+        warning(paste("impc.unanalyzed.only shall be a single logical value,", 
+            "TRUE or FALSE"))
+        return(NULL)
+    }
+    
+    if(impc.unanalyzed.only) 
+    {
+        myUrl <- paste0(myUrl, "&unanalyzedonly=1")
+        impc.only <- TRUE
     }
     
     if (!is.null(impc.centre))

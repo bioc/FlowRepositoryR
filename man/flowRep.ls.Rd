@@ -15,6 +15,7 @@
     flowRep.ls(
         include.private = FALSE, 
         impc.only = FALSE,
+        impc.unanalyzed.only = FALSE,
         impc.centre = NULL, 
         impc.date.from = NULL, impc.date.to = NULL
     )
@@ -29,6 +30,10 @@
         
     \item{impc.only}{Whether to return only datasets that are
         related to IMPC experiments and IMPC specimen.}
+        
+    \item{impc.unanalyzed.only}{Whether to return only datasets that are
+        related to an IMPC experiment and that do not have any automated
+        analysis results associated with.}
     
     \item{impc.centre}{Whether to return only datasets that are
         related to an IMPC experiment performed by a specified IMPC centre.
