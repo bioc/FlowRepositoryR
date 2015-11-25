@@ -186,15 +186,15 @@ impcCodeDescription <- function(code) {
 }
 
 ## Exported
-ilarCodeDescription <- function(code) {
-    if (length(code) == 1) {
-        .FlowRepository.env$.ilars[[code]]
+ilarCodeDescription <- function(ilarCode) {
+    if (length(ilarCode) == 1) {
+        .FlowRepository.env$.ilars[[ilarCode]]
     } else {
-        unlist(lapply(as.list(code), ilarCodeDescription))
+        unlist(lapply(as.list(ilarCode), ilarCodeDescription))
     }
 }
 
-listKnownIlarCodes <- function(code) {
+listKnownIlarCodes <- function() {
     ls(envir = .FlowRepository.env$.ilars)
 }
 

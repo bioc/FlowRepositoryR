@@ -20,14 +20,14 @@
     \item{code}{Either a single IMPC code, or a list of IMPC
         codes, or a vector of IMPC codes. The code (or codes) will be looked
         in an internal database of IMPC codes. 
-        The codes are not case sensiteve.}
+        The codes are not case sensitive.}
 }
 
 \details{
     IMPC parameter and metadata codes are stored in an internal
     database (environment serving as a hash table), which is used to 
     lookup the results of this function.
-    The codes are not case sensiteve. The function can handle a single code
+    The codes are not case sensitive. The function can handle a single code
     as well as a list (or vector) of codes.
 }
 

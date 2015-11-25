@@ -12,15 +12,38 @@
 }
 
 \usage{
-    flowRep.ls(include.private=FALSE)
+    flowRep.ls(
+        include.private = FALSE, 
+        impc.only = FALSE,
+        impc.centre = NULL, 
+        impc.date.from = NULL, impc.date.to = NULL
+    )
 }
 
 \arguments{
+
     \item{include.private}{Whether to include private experiments 
         in the list. This only works if credentials to access 
         FlowRepository have been provided. By default, only 
-        public experiments will be listed.
-    }
+        public experiments will be listed.}
+        
+    \item{impc.only}{Whether to return only datasets that are
+        related to IMPC experiments and IMPC specimen.}
+    
+    \item{impc.centre}{Whether to return only datasets that are
+        related to an IMPC experiment performed by a specified IMPC centre.
+        If this is not NULL then it shall be an ILAR code of a known IMPC
+        centre; see also \code{\link{listKnownIlarCodes}}.}
+
+    \item{impc.date.from}{Whether to return only datasets that are
+        related to an IMPC experiment performed on or after the specified date.
+        If this is not NULL then it shall be a value of the Date class,
+        e.g., \code{as.Date("2015-11-24", "\%Y-\%m-\%d")}.}
+        
+    \item{impc.date.to}{Whether to return only datasets that are
+        related to an IMPC experiment performed on or before the specified date.
+        If this is not NULL then it shall be a value of the Date class,
+        e.g., \code{as.Date("2015-11-24", "\%Y-\%m-\%d")}.}
 }
 
 \details{
@@ -43,6 +66,8 @@
 \seealso{
     \code{\link{flowRep.get}}, 
     \code{\link{setFlowRepositoryCredentials}}
+    \code{\link{listKnownIlarCodes}}
+    \code{\link{ilarCodeDescription}}
 }
 
 \examples{
