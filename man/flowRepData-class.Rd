@@ -20,6 +20,9 @@
 \alias{organizations}
 \alias{organizations,flowRepData-method}
 \alias{organizations,flowRepData,organizations-method}
+\alias{impc.experiments}
+\alias{impc.experiments,flowRepData-method}
+\alias{impc.experiments,flowRepData,impc.experiments-method}
 
 \title{'flowRepData': a class for storing metadata 
     about a FlowRepository dataset}
@@ -244,6 +247,10 @@
             enumerating organizations associated with this dataset.
         }
         
+        \item{impc.experiments}{Return an object of class \code{list} of objects
+            enumerating IMPC experiments associated with this dataset.
+        }
+
         \item{impcResultsCopy}{Return an object of class \code{list} with a
             copy of IMPC analysis results.
             See \code{\link{impcResultsCopy}} for details.

@@ -19,3 +19,28 @@ test_credentials_settings <- function() {
     forgetFlowRepositoryCredentials()
     checkTrue(!FlowRepositoryR:::haveFlowRepositoryCredentials())
 }
+
+test_impcCodeDescription <- function() {
+    checkTrue(impcCodeDescription('impc_imm_088_001') == 
+        'Cell counting equipment model')
+    
+    resVect <- impcCodeDescription(c('IMPC_IMM_002_001', 'IMPC_Imm_004_001')) ==
+        c('Percentage of live gated events in Panel A', 'NKT cells (panel A)')
+    checkTrue(resVect[1])
+    checkTrue(resVect[2])
+    checkTrue(is.null(impcCodeDescription('foo')))
+}
+
+test_ilarCodeDescription <- function() {
+    checkTrue(ilarCodeDescription('Rbri') == "BC Cancer Agency")
+    checkTrue(is.null(ilarCodeDescription('RBri')))
+    resVect <- ilarCodeDescription(c('Rbri', 'H')) == 
+        c('BC Cancer Agency', 'MRC Harwell')
+    checkTrue(resVect[1])
+    checkTrue(resVect[2])
+}
+
+test_listKnownIlarCodes <- function() {
+    tmp <- listKnownIlarCodes()
+    checkTrue(length(tmp) >= 11)
+}

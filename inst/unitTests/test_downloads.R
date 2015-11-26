@@ -25,4 +25,50 @@ test_downloads <- function() {
     ## afterwards.
     myDataset <- download(myDataset)
     checkTrue(is.downloaded(myDataset))
+    
+    checkTrue(id(myDataset) == "FR-FCM-ZZJ7")
+    checkTrue(length(fcs.files(myDataset)) >=2)
+    checkTrue(length(attachments(myDataset)) >= 2)
+    checkTrue(length(impc.experiments(myDataset)) == 0)
+    checkTrue(nchar(localpath(attachments(myDataset)[[1]])) > 5)
+    checkTrue(nchar(localpath(fcs.files(myDataset)[[1]])) > 5)
+    checkTrue(length(organizations(myDataset)) >= 1)
+    
+    checkTrue(FlowRepositoryR:::verify.integrity(fcs.files(myDataset)[[1]]))
+    
+    tmpfile <- tempfile(pattern="FRRUnitTst", tmpdir=tempdir(), fileext=".tmp")
+    sink(tmpfile)
+    summary(myDataset)
+    sink()
+    checkTrue(
+        readChar(tmpfile, file.info(tmpfile)$size) == paste0(
+        "A flowRepData object (FlowRepository dataset) GvHD data subset\n",
+        "2 FCS files, 2 attachments, downloaded\n")
+    )
+    file.remove(tmpfile)
+
+    tmpfile <- tempfile(pattern="FRRUnitTst", tmpdir=tempdir(), fileext=".tmp")
+    sink(tmpfile)
+    summary(fcs.files(myDataset)[[2]])
+    sink()
+    checkTrue(
+        readChar(tmpfile, file.info(tmpfile)$size) == 
+        "A fileProxy object (proxy for a file) GvHD8.fcs (downloaded)\n"
+    )
+    file.remove(tmpfile)
+    
+    tmpfile <- tempfile(pattern="FRRUnitTst", tmpdir=tempdir(), fileext=".tmp")
+    sink(tmpfile)
+    summary(organizations(myDataset)[[1]])
+    sink()
+    checkTrue(
+        readChar(tmpfile, file.info(tmpfile)$size) == paste0(
+            "BC Cancer Agency\n",
+            "675 West 10th Avenue\n",
+            "Vancouver\n",
+            "V5Z 1L3\n",
+            "BC\n",
+            "Canada")
+    )
+    file.remove(tmpfile)
 }

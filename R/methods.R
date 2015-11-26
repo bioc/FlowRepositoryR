@@ -172,7 +172,7 @@ setMethod(
     }
 )
 
-if (!isGeneric("impcResultsCopy")) 
+if (!isGeneric("impcResultsCopy"))
 {
     if (is.function("impcResultsCopy")) {
         fun <- impcResultsCopy
