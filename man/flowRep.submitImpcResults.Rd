@@ -68,6 +68,7 @@
 \seealso{
     \code{\link{setFlowRepositoryCredentials}},
     \code{\link{impcResultsCopy}},
+    \code{\link{flowRep.submitGeneStatus}},    
     \code{\link{flowRep.get}}
 }
 

@@ -80,3 +80,36 @@ flowRep.logout <- function(curlHandle)
         curl=curlHandle, .opts=list(ssl.verifypeer=FALSE))   
 }
 
+preprocessHttpHeader <- function(header)
+{
+    # Extract few of the common respone statuses from the header.
+    # If not among those then return the whole header.
+    if (length(grep("200 OK", header, ignore.case = TRUE)) >= 1) {
+        header <- "200 OK"
+    } else {
+        if (length(grep("401 Unauthorized", header, ignore.case = TRUE)) >= 1) {
+            header <- "401 Unauthorized"
+        } else {
+            if (length(grep("403 Forbidden", header, 
+                            ignore.case = TRUE)) >= 1) {
+                header <- "403 Forbidden"
+            } else {
+                if (length(grep("500 Internal Server Error", header, 
+                                ignore.case = TRUE)) >= 1) {
+                    header <- "500 Internal Server Error"
+                } else {
+                    if (length(grep("404 Not Found", header, 
+                                    ignore.case = TRUE)) >= 1) {
+                        header <- "404 Not Found"
+                    } else {
+                        if (length(grep("400 Bad Request", header, 
+                                        ignore.case = TRUE)) >= 1) {
+                            header <- "400 Bad Request"
+                        }   
+                    }
+                }
+            } 
+        }
+    }
+    header
+}

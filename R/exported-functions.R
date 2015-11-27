@@ -210,36 +210,48 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
                    headerfunction=headfunc$update, writefunc=writefunc$update))
     
     response <- writefunc$value()
-    header <- headfunc$value()
-    # Extract few of the common respone statuses from the header.
-    # If not among those then return the whole header.
-    if (length(grep("200 OK", header, ignore.case = TRUE)) >= 1) {
-        header <- "200 OK"
-    } else {
-        if (length(grep("401 Unauthorized", header, ignore.case = TRUE)) >= 1) {
-            header <- "401 Unauthorized"
-        } else {
-            if (length(grep("403 Forbidden", header, 
-                ignore.case = TRUE)) >= 1) {
-                header <- "403 Forbidden"
-            } else {
-                if (length(grep("500 Internal Server Error", header, 
-                                ignore.case = TRUE)) >= 1) {
-                    header <- "500 Internal Server Error"
-                } else {
-                    if (length(grep("404 Not Found", header, 
-                                    ignore.case = TRUE)) >= 1) {
-                        header <- "404 Not Found"
-                    } else {
-                        if (length(grep("400 Bad Request", header, 
-                                        ignore.case = TRUE)) >= 1) {
-                            header <- "400 Bad Request"
-                        }   
-                    }
-                }
-            } 
-        }
-    }
+    header <- preprocessHttpHeader(headfunc$value())
     list(response=response, status=header)
 }
+
+
+flowRep.submitGeneStatus <- function(
+    mgiGeneId, geneSymbol, isPhenodeviant, comment=NULL, isProcessed=TRUE) 
+{
+    if (!is.character(mgiGeneId) || is.null(mgiGeneId) || 
+        length(mgiGeneId) != 1 || nchar(mgiGeneId) < 1)
+        stop("mgiGeneId shall be a valid MGI Gene identifier", call.=FALSE)
+    if (!is.character(geneSymbol) || is.null(geneSymbol) || 
+        length(geneSymbol) != 1 || nchar(geneSymbol) < 1)
+        stop("geneSymbol shall be a valid gene symbol", call.=FALSE)
+    if (!is.logical(isPhenodeviant) || length(isPhenodeviant) != 1)
+        stop("isPhenodeviant shall be TRUE or FALSE", call.=FALSE)
+    if (!is.logical(isProcessed) || length(isProcessed) != 1)
+        stop("isProcessed shall be TRUE or FALSE", call.=FALSE)
+    if (!is.null(comment) && (!is.character(comment) || 
+        length(comment) != 1 || nchar(comment) < 1))
+        stop("comment shall be a single character string or NULL", call.=FALSE)
+
+    if (!haveFlowRepositoryCredentials()) stop(
+        "credentials need to be set before you can submit gene status results",
+        call.=FALSE)
+    
+    credentials <- getFlowRepositoryCredentials()
+    
+    headfunc  <- basicTextGatherer()
+    writefunc <- basicTextGatherer()
+    response <- postForm(
+        paste0(getFlowRepositoryURL(), "impc/results/submitgene"),
+        email=credentials[1], pass=credentials[2],
+        mgi_gene_id=mgiGeneId, gene_symbol=geneSymbol, 
+        is_phenodeviant=isPhenodeviant, is_processed=isProcessed,
+        comment=comment,
+        .opts=list(ssl.verifypeer=FALSE, 
+                   headerfunction=headfunc$update, writefunc=writefunc$update))
+    
+    response <- writefunc$value()
+    header <- preprocessHttpHeader(headfunc$value())
+    list(response=response, status=header)
+}
+
 

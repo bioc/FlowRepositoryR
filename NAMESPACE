@@ -23,6 +23,7 @@ importFrom(
 export(
     "flowRep.ls", "flowRep.get", "flowRep.search",
     "flowRep.submitImpcResults",
+    "flowRep.submitGeneStatus",
     "getFlowRepositoryURL", 
     "setFlowRepositoryURL", "setFlowRepositoryCredentials",
     "forgetFlowRepositoryCredentials",
