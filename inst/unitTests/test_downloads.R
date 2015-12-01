@@ -41,9 +41,8 @@ test_downloads <- function() {
     summary(myDataset)
     sink()
     checkTrue(
-        readChar(tmpfile, file.info(tmpfile)$size) == paste0(
-        "A flowRepData object (FlowRepository dataset) GvHD data subset\n",
-        "2 FCS files, 2 attachments, downloaded\n")
+        grepl('flowRepData', readChar(tmpfile, file.info(tmpfile)$size), 
+            fixed=TRUE)
     )
     file.remove(tmpfile)
 
