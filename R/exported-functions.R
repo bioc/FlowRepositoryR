@@ -27,15 +27,19 @@ flowRep.ls <- function(
     impc.unanalyzed.only=FALSE,
     impc.centre=NULL,
     impc.date.from=NULL,
-    impc.date.to=NULL) 
-    {
+    impc.date.to=NULL,
+    impc.specimen.geneKO.mgiId=NULL,
+    impc.specimen.geneKO.geneSymbol=NULL,
+    impc.specimen.baseline=NULL,
+    impc.specimen.minCount=NULL)
+{
     if (!haveFlowRepositoryCredentials()) include.private <- FALSE
     destfile <- tempfile(pattern="FlowRepository.DatasetList", 
         tmpdir=tempdir(), fileext=".xml")
     h <- getCurlHandle(cookiefile="")
 
     myUrl <- paste0(getFlowRepositoryURL(), 
-        'list?client=', getFlowRepositoryClientID())
+        'list?client=', URLencode(getFlowRepositoryClientID()))
     
     if(length(impc.only) > 1 || !is.logical(impc.only))
     {
@@ -67,7 +71,7 @@ flowRep.ls <- function(
             } 
             else 
             {
-                myUrl <- paste0(myUrl, "&impccentre=", impc.centre)
+                myUrl <- paste0(myUrl, "&impccentre=", URLencode(impc.centre, reserved=TRUE))
                 impc.only <- TRUE
             }
         }
@@ -89,7 +93,7 @@ flowRep.ls <- function(
         else
         {
             myUrl <- paste0(myUrl, "&datafrom=", 
-                strftime(impc.date.from, "%Y%m%d"))
+                URLencode(strftime(impc.date.from, "%Y%m%d"), reserved=TRUE))
             impc.only <- TRUE
         }
     }
@@ -105,11 +109,79 @@ flowRep.ls <- function(
         else
         {
             myUrl <- paste0(myUrl, "&datato=", 
-                strftime(impc.date.to, "%Y%m%d"))
+                URLencode(strftime(impc.date.to, "%Y%m%d"), reserved=TRUE))
             impc.only <- TRUE
         }
     }
     
+    if (!is.null(impc.specimen.geneKO.mgiId))
+    {
+        if (is.character(impc.specimen.geneKO.mgiId) && 
+            (length(impc.specimen.geneKO.mgiId) == 1))
+        {
+            myUrl <- paste0(myUrl, "&mgigeneid=", 
+                URLencode(impc.specimen.geneKO.mgiId, reserved=TRUE))
+            impc.only <- TRUE
+        }
+        else 
+        {
+            warning("impc.specimen.geneKO.mgiId shall be a single string of characters")
+            return(NULL)
+        }
+    }
+    
+    if (!is.null(impc.specimen.geneKO.geneSymbol))
+    {
+        if (is.character(impc.specimen.geneKO.geneSymbol) && 
+                (length(impc.specimen.geneKO.geneSymbol) == 1))
+        {
+            myUrl <- paste0(myUrl, "&genesymbol=", 
+                URLencode(impc.specimen.geneKO.geneSymbol, reserved=TRUE))
+            impc.only <- TRUE
+        }
+        else 
+        {
+            warning("impc.specimen.geneKO.geneSymbol shall be a single string of characters")
+            return(NULL)
+        }
+    }
+    
+    if(!is.null(impc.specimen.baseline))
+    {
+        if(length(impc.specimen.baseline) > 1 || !is.logical(impc.specimen.baseline))
+        {
+            warning(paste("impc.specimen.baseline shall be NULL or a single", 
+                          "logical value, TRUE or FALSE"))
+            return(NULL)
+        } 
+        else 
+        {
+            impc.only <- TRUE
+            if(impc.specimen.baseline) 
+            {
+                myUrl <- paste0(myUrl, "&baseline=1")
+            }
+            else
+            {
+                myUrl <- paste0(myUrl, "&baseline=0")
+            }
+        }
+    }
+    
+    if(!is.null(impc.specimen.minCount))
+    {
+        if(length(impc.specimen.minCount) > 1 || !is.numeric(impc.specimen.minCount))
+        {
+            warning("impc.specimen.minCount shall be NULL or a numeric value")
+            return(NULL)
+        }
+        else
+        {
+            myUrl <- paste0(myUrl, "&minmice=", 
+                URLencode(as.character(impc.specimen.minCount), reserved=TRUE))
+            impc.only <- TRUE
+        }
+    }    
     
     if (impc.only) 
     {
@@ -186,7 +258,7 @@ flowRep.search <- function(query.string) {
     unlist(myEnv[['datasetIDs']])
 }
 
-flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
+flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results, final=TRUE) {
     if (!is.list(results)) stop("results shall be a list", call.=FALSE)
     if ((!is.character(gatedByIlar)) || 
         (nchar(gatedByIlar) == 0) || (nchar(gatedByIlar) > 5))
@@ -197,6 +269,13 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
     if (!haveFlowRepositoryCredentials()) 
         stop("credentials need to be set before you can submit IMPC results", 
              call.=FALSE)
+    if (length(final) > 1 || !is.logical(final))
+    {
+        stop("final need to be a single logical value, TRUE or FALSE", 
+             call.=FALSE)
+    }
+    if (final) final <- "1"
+    else final <- "0"
     
     credentials <- getFlowRepositoryCredentials()
     resultsJson <- toJSON(results)
@@ -204,10 +283,10 @@ flowRep.submitImpcResults <- function(gatedByIlar, impcExpId, results) {
     writefunc <- basicTextGatherer()
     response <- postForm(
         paste0(getFlowRepositoryURL(), "impc/results/submit"),
-        email=credentials[1], pass=credentials[2],
+        email=credentials[1], pass=credentials[2], final=final,
         gated_by=gatedByIlar, impc_exp_id=impcExpId, results=resultsJson,
         .opts=list(ssl.verifypeer=FALSE, 
-                   headerfunction=headfunc$update, writefunc=writefunc$update))
+            headerfunction=headfunc$update, writefunc=writefunc$update))
     
     response <- writefunc$value()
     header <- preprocessHttpHeader(headfunc$value())
