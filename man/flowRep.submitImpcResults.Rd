@@ -28,8 +28,8 @@
         in \code{https://www.mousephenotype.org/impress/protocol/174/7}
         (e.g., IMPC_IMM_011_001 to state the number of CD4 NKT cells in 
         IMPC panel A). See also \code{\link{impcResultsCopy}}.}
-    \item{final}{Whether the results being submitted shall considered to be the
-        final results. This should be set to TRUE only if a final (complete) 
+    \item{final}{Whether the results being submitted shall be considered to be
+        the final results. This should be set to TRUE only if a final (complete) 
         set of results is being submitted (i.e., results for both panels are 
         there). If you are submitting intermediate results, such as results for
         one of the panel only, you should set this to FALSE and then you can
