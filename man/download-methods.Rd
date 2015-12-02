@@ -45,7 +45,7 @@
             with names matching a regular expression specified as a single
             string of characters in this argument. For example, the regular
             expression "pA.*fcs" will download only files whose name starts with
-            "pA" and ends with "fcs"; the ".*" part if the regular expression
+            "pA" and ends with "fcs"; the ".*" part of the regular expression
             means any character (.) repreated 0 or more times (*). This 
             particular example can be used to download FCS files from IMPC 
             panel A as their names are created as 
@@ -73,7 +73,7 @@
             if its name is matching a regular expression specified as a single
             string of characters in this argument. For example, the regular
             expression "pA.*fcs" will download only files whose name starts with
-            "pA" and ends with "fcs"; the ".*" part if the regular expression
+            "pA" and ends with "fcs"; the ".*" part of the regular expression
             means any character (.) repreated 0 or more times (*). This 
             particular example can be used to download FCS files from IMPC 
             panel A as their names are created as 
