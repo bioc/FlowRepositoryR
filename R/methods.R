@@ -66,13 +66,25 @@ setMethod(
     "download",
     signature=signature(object="fileProxy"),
     definition=function(object, dirpath=NULL, filepath=NULL, 
-        curlHandle=getCurlHandle(cookiefile=""), show.progress=TRUE, ...)
+        curlHandle=getCurlHandle(cookiefile=""), show.progress=TRUE, 
+        only.files=NULL, ...)
     {
         if (is.downloaded(object))
         {
             if (show.progress) 
                 cat(paste("File", object@name, "is downloaded already.\n"))
             return(object)
+        }
+        
+        if (!is.null(only.files))
+        {
+            if ((!is.character(only.files)) || (length(only.files) > 1))
+            {
+                warning("only.files shall be a single regular expression encoded as a string of characters... ignoring the argument.")
+            } else if (!grepl(only.files, object@name)) {
+                if (show.progress) cat(paste("File", object@name, "skipped\n"))
+                return(object)
+            }
         }
     
         if (is.null(filepath)) 
@@ -108,7 +120,7 @@ setMethod(
     "download",
     signature=signature(object="flowRepData"),
     definition=function(object, dirpath=NULL, use.credentials=TRUE, 
-        show.progress=TRUE, ...)
+        show.progress=TRUE, only.files=NULL, ...)
     {
         if (is.downloaded(object))
         {
@@ -126,7 +138,8 @@ setMethod(
         if (use.credentials) flowRep.login(h)
         if (show.progress) cat(paste("Downloading to", dirpath, "\n"))
         object@fcs.files <- lapply(object@fcs.files, download, 
-            dirpath=dirpath, curlHandle=h, show.progress=show.progress, ...)
+            dirpath=dirpath, curlHandle=h, show.progress=show.progress, 
+            only.files=only.files, ...)
         object@attachments <- lapply(object@attachments, download, 
             dirpath=dirpathAtt, curlHandle=h, show.progress=show.progress, ...)
         if (use.credentials) flowRep.logout(h)

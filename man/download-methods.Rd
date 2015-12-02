@@ -41,6 +41,16 @@
             \code{use.credentials=FALSE} to avoid logging in.}
         \item{\code{show.progress=TRUE}}{ Whether to show progress as 
             individual files are being downloaded.}
+        \item{\code{only.files=NULL}}{ If not NULL then download only files 
+            with names matching a regular expression specified as a single
+            string of characters in this argument. For example, the regular
+            expression "pA.*fcs" will download only files whose name starts with
+            "pA" and ends with "fcs"; the ".*" part if the regular expression
+            means any character (.) repreated 0 or more times (*). This 
+            particular example can be used to download FCS files from IMPC 
+            panel A as their names are created as 
+            \code{pA_specimenId_incrementvalue.fcs}. 
+            Files will be skipped if the regular expression does not match.}
     }
     
     If you are downloading a single file by (passing a 
@@ -59,6 +69,17 @@
             use, not to be used by regular users.}
         \item{\code{show.progress=TRUE}}{ Whether to show progress as the 
             file is being downloaded.}
+        \item{\code{only.files=NULL}}{ If not NULL then download the file only
+            if its name is matching a regular expression specified as a single
+            string of characters in this argument. For example, the regular
+            expression "pA.*fcs" will download only files whose name starts with
+            "pA" and ends with "fcs"; the ".*" part if the regular expression
+            means any character (.) repreated 0 or more times (*). This 
+            particular example can be used to download FCS files from IMPC 
+            panel A as their names are created as 
+            \code{pA_specimenId_incrementvalue.fcs}. 
+            The file will be skipped if the regular expression does not match.}
+            
     }
 }
 
