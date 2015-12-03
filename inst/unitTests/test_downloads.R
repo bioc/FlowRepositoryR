@@ -51,8 +51,8 @@ test_downloads <- function() {
     summary(fcs.files(myDataset)[[2]])
     sink()
     checkTrue(
-        readChar(tmpfile, file.info(tmpfile)$size) == 
-        "A fileProxy object (proxy for a file) GvHD8.fcs (downloaded)\n"
+        grepl('fileProxy', readChar(tmpfile, file.info(tmpfile)$size),
+            fixed=TRUE)
     )
     file.remove(tmpfile)
     
@@ -61,13 +61,8 @@ test_downloads <- function() {
     summary(organizations(myDataset)[[1]])
     sink()
     checkTrue(
-        readChar(tmpfile, file.info(tmpfile)$size) == paste0(
-            "BC Cancer Agency\n",
-            "675 West 10th Avenue\n",
-            "Vancouver\n",
-            "V5Z 1L3\n",
-            "BC\n",
-            "Canada")
+        grepl('BC Cancer Agency', readChar(tmpfile, file.info(tmpfile)$size),
+            fixed=TRUE)
     )
     file.remove(tmpfile)
 }
