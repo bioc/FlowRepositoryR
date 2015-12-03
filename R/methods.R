@@ -82,7 +82,7 @@ setMethod(
             {
                 warning("only.files shall be a single regular expression encoded as a string of characters... ignoring the argument.")
             } else if (!grepl(only.files, object@name)) {
-                if (show.progress) cat(paste("File", object@name, "skipped\n"))
+                if (show.progress) cat(paste("File", object@name, "skipped.\n"))
                 return(object)
             }
         }
