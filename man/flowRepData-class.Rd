@@ -23,6 +23,8 @@
 \alias{impc.experiments}
 \alias{impc.experiments,flowRepData-method}
 \alias{impc.experiments,flowRepData,impc.experiments-method}
+\alias{impc.experiments<-}
+\alias{impc.experiments<-,flowRepData-method}
 
 \title{'flowRepData': a class for storing metadata 
     about a FlowRepository dataset}

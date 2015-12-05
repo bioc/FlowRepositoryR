@@ -16,6 +16,13 @@ test_credentials_settings <- function() {
     checkTrue(!FlowRepositoryR:::haveFlowRepositoryCredentials())
     setFlowRepositoryCredentials(email="boo@gmail.com", password="foo123456")
     checkTrue(FlowRepositoryR:::haveFlowRepositoryCredentials())
+    tmpfile <- tempfile(pattern="FRRUnitTst", tmpdir=tempdir(), fileext=".tmp")
+    sink(tmpfile)
+    cat(paste0("boo@gmail.com\nfoo123456\n"))
+    sink()
+    setFlowRepositoryCredentials(filename=tmpfile)
+    file.remove(tmpfile)
+    checkTrue(length(FlowRepositoryR:::getFlowRepositoryCredentials()) == 2)
     forgetFlowRepositoryCredentials()
     checkTrue(!FlowRepositoryR:::haveFlowRepositoryCredentials())
 }

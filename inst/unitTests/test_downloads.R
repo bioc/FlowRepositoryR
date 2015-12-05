@@ -65,4 +65,27 @@ test_downloads <- function() {
             fixed=TRUE)
     )
     file.remove(tmpfile)
+    
+    myError <- tryCatch({fcs.files(myDataset) <- "foo"}, 
+        error = function(x) paste0(x))
+    checkTrue(myError == "Error: fcs.files shall be a list\n")
+    
+    fcs.files(myDataset) <- c(fcs.files(myDataset), fcs.files(myDataset))
+    checkTrue(length(fcs.files(myDataset)) == 4)
+
+    myError <- tryCatch({attachments(myDataset) <- "foo"}, 
+        error = function(x) paste0(x))
+    checkTrue(myError == "Error: attachments shall be a list\n")
+    
+    attachments(myDataset) <- c(attachments(myDataset), attachments(myDataset))
+    checkTrue(length(attachments(myDataset)) == 4)
+    
+    myError <- tryCatch({impc.experiments(myDataset) <- "foo"}, 
+        error = function(x) paste0(x))
+    checkTrue(myError == "Error: impc.experiments shall be a list\n")
+    
+    impc.experiments(myDataset) <- c(impc.experiments(myDataset), 
+                                     impc.experiments(myDataset))
+    checkTrue(length(impc.experiments(myDataset)) == 0)
+    
 }
