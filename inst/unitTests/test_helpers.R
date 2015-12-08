@@ -1,4 +1,4 @@
-library(Rcurl)
+library(RCurl)
 test_login_logout <- function() {
     h <- getCurlHandle(cookiefile="")
     myError <- tryCatch({FlowRepositoryR:::flowRep.login(h)}, 
