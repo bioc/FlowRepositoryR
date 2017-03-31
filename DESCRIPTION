@@ -1,11 +1,11 @@
 Package: FlowRepositoryR
 Type: Package
 Title: FlowRepository R Interface
-Version: 1.7.0
+Version: 1.7.1
 Author: Josef Spidlen [aut, cre]
 Authors@R: c(person("Josef", "Spidlen", role = c("aut", "cre"), email =
-        "jspidlen@bccrc.ca"))
-Maintainer: Josef Spidlen <jspidlen@bccrc.ca>
+        "jspidlen@gmail.com"))
+Maintainer: Josef Spidlen <jspidlen@gmail.com>
 Description: This package provides an interface to search and download
         data and annotations from FlowRepository (flowrepository.org).
         It uses the FlowRepository programming interface to communicate
