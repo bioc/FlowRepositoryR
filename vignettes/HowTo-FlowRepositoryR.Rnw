@@ -107,7 +107,7 @@ You will need R libraries \Rpackage{XML}, \Rpackage{RCurl}, and
 \Rpackage{tools} in order to install \Rpackage{FlowRepositoryR}.
 These are being used to parse the XML used to communicate with the
 FlowRepository server and to establish the HTTP(s) connection.
-If you are installing from BioConductor, biocLite should resolve
+If you are installing from BioConductor, BiocManager should resolve
 those dependencies for you. 
 In addition, it is recommended to also have the \Rpackage{RUnit}
 library to be able to run unit tests. Finally, you will likely 
