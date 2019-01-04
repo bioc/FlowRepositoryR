@@ -1,7 +1,7 @@
 Package: FlowRepositoryR
 Type: Package
 Title: FlowRepository R Interface
-Version: 1.14.0
+Version: 1.14.1
 Author: Josef Spidlen [aut, cre]
 Authors@R: c(person("Josef", "Spidlen", role = c("aut", "cre"), email =
         "jspidlen@gmail.com"))
@@ -17,5 +17,5 @@ Collate: AllClasses.R settings.R helper-functions.R parsing-methods.R
         summary-methods.R accessor-methods.R methods.R
         exported-functions.R
 License: Artistic-2.0
-biocViews: Infrastructure, FlowCytometry
+biocViews: ImmunoOncology, Infrastructure, FlowCytometry
 NeedsCompilation: no
